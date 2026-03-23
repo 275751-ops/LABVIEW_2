@@ -52,6 +52,9 @@
 #include <PubSubClient.h>
 #include <ArduinoJson.h>
 #include "secrets.h"
+#include <sys/time.h>
+#include <time.h>
+
 
 WiFiClient espClient;
 PubSubClient mqttClient(espClient);
@@ -93,13 +96,15 @@ delay(2000);
 }
 }
 }
-void publishMeasurement() {
+void publishMeasurement(long long ts_ms) {
 StaticJsonDocument<256> doc;
+doc["schema_version"] = 1;
+doc["group_id"] = "g03";
 doc["device_id"] = deviceId;
 doc["sensor"] = "temperature";
 doc["value"] = 24.5;
 doc["unit"] = "C";
-doc["ts_ms"] = millis();
+doc["ts_ms"] = ts_ms;
 char payload[256];
 serializeJson(doc, payload);
 mqttClient.publish(topic.c_str(), payload);
@@ -116,7 +121,23 @@ Serial.print("Device ID: ");
 Serial.println(deviceId);
 connectWiFi();
 connectMQTT();
+
+configTime(0, 0, "tempus1.gum.gov.pl", "tempus2.gum.gov.pl");
+struct tm timeinfo;
+while (!getLocalTime(&timeinfo)) {
+Serial.println("Oczekiwanie na synchronizacje czasu...");
+delay(500);
 }
+Serial.println("Czas zsynchronizowany.");
+}
+
+
+long long getTimestampMs() {
+struct timeval tv;
+gettimeofday(&tv, NULL);
+return ((long long)tv.tv_sec * 1000LL) + (tv.tv_usec / 1000);
+}
+
 void loop() {
 if (WiFi.status() != WL_CONNECTED) {
 connectWiFi();
@@ -125,6 +146,9 @@ if (!mqttClient.connected()) {
 connectMQTT();
 }
 mqttClient.loop();
-publishMeasurement();
+long long ts_ms = getTimestampMs();
+Serial.println(ts_ms);
+publishMeasurement(ts_ms);
+
 delay(5000);
 }
