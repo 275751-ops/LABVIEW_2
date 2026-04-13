@@ -45,8 +45,6 @@
 // (uint32_t)chipId);
 // return String(id);
 // }
-
-
 #include <Arduino.h>
 #include <WiFi.h>
 #include <PubSubClient.h>
@@ -99,7 +97,7 @@ delay(2000);
 void publishMeasurement(long long ts_ms) {
 StaticJsonDocument<256> doc;
 doc["schema_version"] = 1;
-doc["group_id"] = "g03";
+doc["group_id"] = "g01";
 doc["device_id"] = deviceId;
 doc["sensor"] = "temperature";
 doc["value"] = 24.5;

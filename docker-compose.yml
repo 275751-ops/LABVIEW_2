@@ -25,3 +25,12 @@ services:
       - 5432:5432
     image: database:v1
     container_name: postgres
+
+  ingestor:
+    build:
+      context: ./ingestor
+      dockerfile: Dockerfile
+    container_name: ingestor
+    depends_on:
+    - broker
+    - database
