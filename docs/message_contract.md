@@ -1,7 +1,8 @@
 # wiadomosc_pomiarowa_V1
+
 {
 "schema_version": 1,
-"group_id": "g03",
+"group_id": "g01",
 "device_id": "esp32-test",
 "sensor": "temperature",
 "value": 24.5,
