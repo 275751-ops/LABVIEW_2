@@ -1,3 +1,7 @@
+# opis struktury topicow
+
+lab=>g01=>uuid=>temperature
+
 # wiadomosc_pomiarowa_V1
 
 {
