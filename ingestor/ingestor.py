@@ -1,6 +1,6 @@
 import json
 import paho.mqtt.client as mqtt
-import config
+from config import get_connection
 
 MQTT_HOST = "broker"
 MQTT_PORT = 1883
@@ -17,7 +17,7 @@ osobnego pliku ktorego nie bedziesz wgrywac do repozytorium!
 """
 
 def save_measurement(topic,data):
-   conn = config.get_connection()
+   conn = get_connection()
    cur=conn.cursor()
    cur.execute("""
 	INSERT INTO measurements

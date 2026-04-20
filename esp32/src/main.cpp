@@ -52,6 +52,9 @@
 #include "secrets.h"
 #include <sys/time.h>
 #include <time.h>
+#include <Adafruit_Sensor.h>
+#include <Adafruit_BME280.h>
+
 
 
 WiFiClient espClient;
