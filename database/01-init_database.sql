@@ -9,7 +9,7 @@ CREATE TABLE sensor (
     is_online BOOLEAN DEFAULT FALSE
 );
 
-CREATE TABLE IF NOT EXISTS measurments (
+CREATE TABLE IF NOT EXISTS measurements (
     id SERIAL PRIMARY KEY,
     schema_version INT,
     group_id TEXT,
