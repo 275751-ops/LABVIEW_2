@@ -21,8 +21,8 @@ def save_measurement(topic,data):
    cur=conn.cursor()
    cur.execute("""
 	INSERT INTO measurements
-	(group_id,device_id,sensor,value,unit,ts_ms,seq,topic)
-	VALUES (%s,%s,%s,%s,%s,%s,%s,%s)
+	(group_id,device_id,sensor,value,unit,ts_ms,topic)
+	VALUES (%s,%s,%s,%s,%s,%s,%s)
    """,(
 	data.get("group_id"),
 	data["device_id"],
@@ -30,7 +30,6 @@ def save_measurement(topic,data):
 	data["value"],
 	data.get("unit"),
 	data["ts_ms"],
-	data.get("seq"),
 	topic
    ))
    conn.commit()

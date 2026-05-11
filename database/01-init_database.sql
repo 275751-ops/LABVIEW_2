@@ -18,7 +18,6 @@ CREATE TABLE IF NOT EXISTS measurements (
     value DOUBLE PRECISION NOT NULL,
     unit TEXT,
     ts_ms BIGINT NOT NULL,
-    seq INTEGER,
     topic TEXT,
     received_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
 );

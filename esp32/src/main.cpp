@@ -64,7 +64,7 @@ PubSubClient mqttClient(espClient);
 Adafruit_BMP280 bme;
 
 String deviceId;
-String baseTopic; // Zmieniono na baseTopic, aby doklejać końcówki (temperature/humidity/pressure)
+String baseTopic; // baseTopic, aby doklejać końcówki (temperature/humidity/pressure)
 
 String generateDeviceIdFromEfuse() {
   uint64_t chipId = ESP.getEfuseMac();
@@ -140,10 +140,10 @@ void setupBME280() {
 void publishMeasurement(long long ts_ms, String sensorType, float value, String unit) {
   // W ArduinoJson v7 używamy po prostu JsonDocument
   JsonDocument doc; 
-  
+
   doc["schema_version"] = 1;
-  doc["group_id"] = "g03";
   doc["device_id"] = deviceId;
+  doc["group_id"] = "g03";
   doc["sensor"] = sensorType;
   doc["value"] = value;
   doc["unit"] = unit;

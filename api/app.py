@@ -16,7 +16,7 @@ def get_measurements():
     conn = get_connection()
     cur = conn.cursor()
     cur.execute("""
-        SELECT id, group_id, device_id, sensor, value, unit, ts_ms, seq, topic
+        SELECT id, group_id, device_id, sensor, value, unit, ts_ms, topic
         FROM measurements
         ORDER BY id DESC
         LIMIT 20
