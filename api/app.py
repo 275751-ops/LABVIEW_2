@@ -74,7 +74,7 @@ def get_latest_temperature():
 
     cur.execute("""
         SELECT id, group_id, device_id, sensor, value, unit, ts_ms, topic
-        FROM measurements
+        FROM measurements/latest
         WHERE sensor = 'temperature'
         ORDER BY id DESC
         LIMIT 1
