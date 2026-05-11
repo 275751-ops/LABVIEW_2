@@ -35,7 +35,7 @@ def get_measurements():
             "unit": row[5],
             "ts_ms": row[6],
            # "seq": row[7],
-            "topic": row[8]
+            "topic": row[7]
     })
     return jsonify(result)
 
@@ -63,7 +63,7 @@ def get_latest_measurement():
         "unit": row[5],
         "ts_ms": row[6],
        # "seq": row[7],
-        "topic": row[8]
+        "topic": row[7]
     })
 
 @app.route("/measurements/history")
@@ -102,7 +102,7 @@ def get_measurement_history():
         "unit": row[5],
         "ts_ms": row[6],
        # "seq": row[7],
-        "topic": row[8]
+        "topic": row[7]
     })
     return jsonify(result)
 
