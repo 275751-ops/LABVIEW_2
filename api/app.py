@@ -68,7 +68,7 @@ def get_latest_measurement():
 
 
 @app.route("/measurements/latest/temperature")
-def get_latest_measurement():
+def get_latest_temperature():
     conn = get_connection()
     cur = conn.cursor()
 
