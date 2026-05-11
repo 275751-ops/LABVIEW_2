@@ -44,7 +44,7 @@ def get_latest_measurement():
     conn = get_connection()
     cur = conn.cursor()
     cur.execute("""
-    SELECT id, group_id, device_id, sensor, value, unit, ts_ms, seq, topic
+    SELECT id, group_id, device_id, sensor, value, unit, ts_ms, topic
         FROM measurements
         ORDER BY id DESC
         LIMIT 1
@@ -74,7 +74,7 @@ def get_measurement_history():
     conn = get_connection()
     cur = conn.cursor()
     query = """
-        SELECT id, group_id, device_id, sensor, value, unit, ts_ms, seq, topic
+        SELECT id, group_id, device_id, sensor, value, unit, ts_ms, topic
         FROM measurements
         WHERE 1=1
     """
