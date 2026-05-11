@@ -71,18 +71,23 @@ def get_latest_measurement():
 def get_latest_measurement():
     conn = get_connection()
     cur = conn.cursor()
+
     cur.execute("""
-    SELECT id, group_id, device_id, sensor, value, unit, ts_ms, topic
+        SELECT id, group_id, device_id, sensor, value, unit, ts_ms, topic
         FROM measurements
         WHERE sensor = 'temperature'
         ORDER BY id DESC
         LIMIT 1
     """)
+
     row = cur.fetchone()
+
     cur.close()
     conn.close()
+
     if row is None:
         return jsonify({"message": "Brak danych"}), 404
+
     return jsonify({
         "id": row[0],
         "group_id": row[1],
@@ -91,7 +96,7 @@ def get_latest_measurement():
         "value": row[4],
         "unit": row[5],
         "ts_ms": row[6],
-       # "seq": row[7],
+        # "seq": row[7],
         "topic": row[7]
     })
 
