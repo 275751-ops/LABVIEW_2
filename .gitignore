@@ -2,3 +2,10 @@ ingestor/config.py
 ingestor/__pycache__
 api/__pycache__
 api/tempCodeRunnerFile.py
+ui/ne555.ico
+ui/buid
+ui/dist
+ui/venv
+ui/build
+ui/UI.spec
+ui/tempCodeRunnerFile.py

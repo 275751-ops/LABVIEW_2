@@ -67,18 +67,20 @@ def get_latest_measurement():
     })
 
 
-@app.route("/measurements/latest/temperature")
-def get_latest_temperature():
+@app.route("/measurements/latest/<sensor>")
+def get_latest_sensor(sensor):
+
     conn = get_connection()
     cur = conn.cursor()
 
     cur.execute("""
-        SELECT id, group_id, device_id, sensor, value, unit, ts_ms, topic
-        FROM measurements/latest
-        WHERE sensor = 'temperature'
+        SELECT id, group_id, device_id, sensor,
+               value, unit, ts_ms, topic
+        FROM measurements
+        WHERE sensor = %s
         ORDER BY id DESC
         LIMIT 1
-    """)
+    """, (sensor,))
 
     row = cur.fetchone()
 
@@ -96,7 +98,6 @@ def get_latest_temperature():
         "value": row[4],
         "unit": row[5],
         "ts_ms": row[6],
-        # "seq": row[7],
         "topic": row[7]
     })
 
