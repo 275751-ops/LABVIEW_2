@@ -124,12 +124,15 @@ class SensorApp(QWidget):
         # Rysowanie
         self.ax_temp.plot(t_x, t_y)
         self.ax_temp.set_title("Temperatura")
+        self.ax_temp.grid(True)
 
         self.ax_pressure.plot(p_x, p_y)
         self.ax_pressure.set_title("Ciśnienie")
+        self.ax_pressure.grid(True)
 
         self.ax_altitude.plot(a_x, a_y)
         self.ax_altitude.set_title("Wysokość")
+        self.ax_altitude.grid(True)
 
         self.figure.tight_layout()
 
