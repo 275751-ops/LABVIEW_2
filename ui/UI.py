@@ -74,7 +74,7 @@ class SensorApp(QWidget):
         if self.ciagly_pomiar.isChecked():
 
             print("START")
-            self.timer.start(2000)
+            self.timer.start(1000)
 
         else:
 
