@@ -7,15 +7,19 @@ services:
       - 5001:5001
     image: api:v1
     container_name: api
+    networks:
+      - backend
   
   broker:
     build:
       context: ./broker
       dockerfile: Dockerfile
     ports: 
-      - 1883:1883
+      - 8883:8883
     image: broker:v1
     container_name: broker
+    networks:
+      - backend
   
   database:
     build:
@@ -25,6 +29,8 @@ services:
       - 5432:5432
     image: database:v1
     container_name: postgres
+    networks:
+      - backend
 
   ingestor:
     build:
@@ -34,3 +40,10 @@ services:
     depends_on:
     - broker
     - database
+    networks:
+      - backend
+
+
+networks:
+  backend:
+    driver: bridge

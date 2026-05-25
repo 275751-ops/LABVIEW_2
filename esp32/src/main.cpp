@@ -8,11 +8,15 @@
 #include <Adafruit_Sensor.h>
 #include <Adafruit_BMP280.h>
 #include <Wire.h>
+#include <WiFiClientSecure.h>
 
 
-WiFiClient espClient;
+
+// WiFiClient espClient;
+// PubSubClient mqttClient(espClient);
+
+WiFiClientSecure espClient;
 PubSubClient mqttClient(espClient);
-
 // Obiekt czujnika BME280
 Adafruit_BMP280 bme;
 
@@ -34,6 +38,33 @@ unsigned long lastMeasurementMs = 0;
 const unsigned long WIFI_RETRY_MS = 5000;
 const unsigned long MQTT_RETRY_MS = 3000;
 const unsigned long MEASUREMENT_PERIOD_MS = 2000;
+
+const char* ca_cert = R"EOF(
+-----BEGIN CERTIFICATE-----
+MIID9zCCAt+gAwIBAgIUKgv86JcZxvVJcc5y0DVOlQKjA9QwDQYJKoZIhvcNAQEL
+BQAwgYoxCzAJBgNVBAYTAlBMMRUwEwYDVQQIDAxEb2xub3NsYXNraWUxEDAOBgNV
+BAcMB1dyb2NsYXcxDDAKBgNVBAoMA3B3cjEMMAoGA1UECwwDUFdyMRMwEQYDVQQD
+DApwb3ByemVjem55MSEwHwYJKoZIhvcNAQkBFhJuaWUgbm8gdHlsZSB0byBuaWUw
+HhcNMjYwNTI1MTU1NjE3WhcNMzYwNTIyMTU1NjE3WjCBijELMAkGA1UEBhMCUEwx
+FTATBgNVBAgMDERvbG5vc2xhc2tpZTEQMA4GA1UEBwwHV3JvY2xhdzEMMAoGA1UE
+CgwDcHdyMQwwCgYDVQQLDANQV3IxEzARBgNVBAMMCnBvcHJ6ZWN6bnkxITAfBgkq
+hkiG9w0BCQEWEm5pZSBubyB0eWxlIHRvIG5pZTCCASIwDQYJKoZIhvcNAQEBBQAD
+ggEPADCCAQoCggEBALDWE9uXUrtDUcnKEbDewuugqK0B4TaimYynYRHTmbDpHg1M
+RAIlGyKLbMQZhYplK0/VH0jyqb2+rgj40NRhUEi6RPj+p8AUM+zUW/IG/+5ES2al
+WH0pU75eGx5l6tFJ8UxMVs2U+eqgtJN7N3p9TM4biVk+Z8z6kFAZUthFCe5aT15D
+EwMMx7FPXku6Bb5kGVfWo8cfpv2nCQjia+1Wk7nUU9YUQ9f/jyLuRPsP2u/K/Hum
+0YeOI/+T8gQ2Pg62pErV1+aghzHG4j5KiWxY9CSDv3WsGdiZ67QigZQ/om7f2kgv
+fCMC5LMGv20WBttCMYYNwKoJHnMny0VhApdcBO8CAwEAAaNTMFEwHQYDVR0OBBYE
+FLj4RMFT2N19m9lCBJ+4vfPFR588MB8GA1UdIwQYMBaAFLj4RMFT2N19m9lCBJ+4
+vfPFR588MA8GA1UdEwEB/wQFMAMBAf8wDQYJKoZIhvcNAQELBQADggEBAFdwjx0D
+ZWQhSHhD5hwQnw6yVpMMLLoxjw3jndtq/VghzkGVYvz/hGmHVqTqouo4f6dVHpv3
+onuPjIMGz/h6I4CY9xTBnOS4kAzgl7YNo1EtJcCMUGOgGM6mbHq2LoXPIiz+GFdX
+vMdAmGONkqA84ifzcV8Rh1MH5InUsKkEWMwf80wkxZZ1BqfVCr1KRcXIKCBDYlM6
+G4JwroXCkM4i1K3LM5EFlHAJmHOdPOwPYqVvqUyaV8hFxCA8IpdUeZE2fBdfXn2R
+cR9yPx+WtJAjoxLXlMNfZSBnwUmkMnZkmWxWeaqfyeBjYzhm46mhvlz0vyBiT2hh
+teNecXzAPG1CwHg=
+-----END CERTIFICATE-----
+)EOF";
 
 
 bool syncTime(uint32_t timeoutMs = 10000)
@@ -218,8 +249,17 @@ void setup() {
   Wire.begin(21, 22);
   setupBME280();
   WiFi.begin(WIFI_SSID, WIFI_PASSWORD);
+
+  while (WiFi.status() != WL_CONNECTED) {
+delay(500);
+}
+if (mqttClient.connect("esp32_client")) {
+mqttClient.publish("test/topic", "Polaczenie TLS dziala poprawnie");
+}
+
   mqttClient.setServer(MQTT_HOST, MQTT_PORT);
 
+  espClient.setCACert(ca_cert);
 
   configTime(0, 0, "tempus1.gum.gov.pl", "tempus2.gum.gov.pl");
   struct tm timeinfo;
