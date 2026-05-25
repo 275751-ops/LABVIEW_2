@@ -221,14 +221,14 @@ void setup() {
   mqttClient.setServer(MQTT_HOST, MQTT_PORT);
 
 
-  // configTime(0, 0, "tempus1.gum.gov.pl", "tempus2.gum.gov.pl");
-  // struct tm timeinfo;
-  // while (!getLocalTime(&timeinfo)) {
-  //   Serial.println("Oczekiwanie na synchronizacje czasu...");
-  //   delay(500);
-  // }
-  // Serial.println("Czas zsynchronizowany.");
-  syncTime();
+  configTime(0, 0, "tempus1.gum.gov.pl", "tempus2.gum.gov.pl");
+  struct tm timeinfo;
+  while (!getLocalTime(&timeinfo)) {
+    Serial.println("Oczekiwanie na synchronizacje czasu...");
+    delay(500);
+  }
+  Serial.println("Czas zsynchronizowany.");
+ // syncTime();
 }
 
 
@@ -265,5 +265,5 @@ void loop() {
 
   Serial.println("-------------------------");
     }}
-  delay(1000);
+  delay(2000);
 }
