@@ -9,3 +9,8 @@ ui/venv
 ui/build
 ui/UI.spec
 ui/tempCodeRunnerFile.py
+certs/ca.key
+certs/ca.srl
+certs/server.key
+certs/server.csr
+certs/server.crt
