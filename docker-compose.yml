@@ -19,7 +19,7 @@ services:
     image: broker:v1
     container_name: broker
     volumes:
-      -./certs:/certs
+      - ./certs:/certs
     networks:
       - backend
   
