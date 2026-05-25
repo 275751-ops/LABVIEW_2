@@ -18,6 +18,8 @@ services:
       - 8883:8883
     image: broker:v1
     container_name: broker
+    volumes:
+      -./certs:/certs
     networks:
       - backend
   
