@@ -3,7 +3,7 @@ import paho.mqtt.client as mqtt
 from config import get_connection
 
 MQTT_HOST = "broker"
-MQTT_PORT = 1883
+MQTT_PORT = 8883
 MQTT_TOPIC = "lab/+/+/+"
 
 # DB_HOST = "database"w
