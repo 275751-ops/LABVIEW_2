@@ -1,5 +1,6 @@
 import json
 import paho.mqtt.client as mqtt
+import ssl
 from config import get_connection
 
 MQTT_HOST = "broker"
@@ -62,6 +63,10 @@ def on_message(client, userdata, msg):
 client = mqtt.Client()
 client.on_connect = on_connect
 client.on_message = on_message
+
+client.tls_set(ca_certs="/app/certs/ca.crt")
+
+client.tls_insecure_set(True)
 
 client.connect(MQTT_HOST, MQTT_PORT, 60)
 client.loop_forever()
