@@ -66,7 +66,7 @@ client.on_message = on_message
 
 client.tls_set(ca_certs="/app/certs/ca.crt")
 
-client.tls_insecure_set(True)
+#client.tls_insecure_set(True)
 
 client.connect(MQTT_HOST, MQTT_PORT, 60)
 client.loop_forever()
