@@ -42,6 +42,8 @@ services:
     - database
     networks:
       - backend
+    volumes:
+      - ./broker/certs:/app/certs:ro
 
 
 networks:
