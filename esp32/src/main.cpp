@@ -41,28 +41,24 @@ const unsigned long MEASUREMENT_PERIOD_MS = 2000;
 
 const char* ca_cert = R"EOF(
 -----BEGIN CERTIFICATE-----
-MIID7zCCAtegAwIBAgIUBZJFkMQ5S3SOL3NluPaILkq8+IQwDQYJKoZIhvcNAQEL
-BQAwgYYxCzAJBgNVBAYTAlBMMRUwEwYDVQQIDAxEb2xub3NsYXNraWUxEDAOBgNV
-BAcMB1dyb2NsYXcxDDAKBgNVBAoMA1BXcjEOMAwGA1UECwwFS01FaUYxDzANBgNV
-BAMMBmJyb2tlcjEfMB0GCSqGSIb3DQEJARYQcG9sc2thQHBvbHNrYS5wbDAeFw0y
-NjA2MDgwODQ0NDRaFw0yNzA2MDgwODQ0NDRaMIGGMQswCQYDVQQGEwJQTDEVMBMG
-A1UECAwMRG9sbm9zbGFza2llMRAwDgYDVQQHDAdXcm9jbGF3MQwwCgYDVQQKDANQ
-V3IxDjAMBgNVBAsMBUtNRWlGMQ8wDQYDVQQDDAZicm9rZXIxHzAdBgkqhkiG9w0B
-CQEWEHBvbHNrYUBwb2xza2EucGwwggEiMA0GCSqGSIb3DQEBAQUAA4IBDwAwggEK
-AoIBAQCgbE4wA5fbKWUCmm1xx/TJN7XNl50rZdN6IeISE3FZjqd5azBf05K8jbdT
-EEUuE0sMsZrRZtffa2RnE01P+CaR5G6cYCvpU8igAXhGdt3cNS3pxeo0U+8h5Cqj
-J3FecLcKW1O/wHrprVKPL718COvrb43PXok38hWZ1/sFrwv19BLm3b1t5RQlgH2B
-big5lMblRadgX7GFWX3HF2bNPfVjkH/iFboU8yb2jOfw3bGx4dW1UCkWJ2PH+xOH
-lRlEwDcr5oOUl0doBrYBYzjV0SSTn+Ouc9MDmFp6mxZJNXQzJ68GAQlLCxACIgbS
-tgu+uyaAHUnxCWWQ2LGU98dNVAmzAgMBAAGjUzBRMB0GA1UdDgQWBBSg8eTjkBrp
-qnHr4cSV8aCdpfysjjAfBgNVHSMEGDAWgBSg8eTjkBrpqnHr4cSV8aCdpfysjjAP
-BgNVHRMBAf8EBTADAQH/MA0GCSqGSIb3DQEBCwUAA4IBAQAAf27CGyxhZuuQQeWv
-lUIm92YaU+MibmmLfvHFNgdydpOKaszg+Sq2wnseAW4+dPhy8E8aoNHhfNHJCgsx
-rSE5QSjsqLawLw40hWuOTsjefR2Vt+betaSjL/V4WiRqZ6v9gdJt4TXsUdGXtAZ8
-jEuZXNKovnFyxT4O2tXgIQhA0ZAagCsbsXzkCpyRT3xCv9oQ8BgirVGK0pp7JqjY
-mWBLFP+Van6DSo6XongJZrz1v4BdTwfYEhcQZLJsbPvVa+GuVVIDcxoQJjlrWyFR
-4rsUqfPl/+w/2UUYHvE9YMMiwVk1OTVCH9yBV7i7riLt2x4CZY+IICRvlxwJKSB9
-xwT3
+MIIDMjCCAhqgAwIBAgIUb0q6H6gYDHIvqUhyyh5OY/VJ9YUwDQYJKoZIhvcNAQEL
+BQAwMTELMAkGA1UEBhMCUEwxDDAKBgNVBAoMA1BXcjEUMBIGA1UEAwwLTW9qZVN1
+cGVyQ0EwHhcNMjYwNjA4MTAyMjQxWhcNMjcwNjA4MTAyMjQxWjAxMQswCQYDVQQG
+EwJQTDEMMAoGA1UECgwDUFdyMRQwEgYDVQQDDAtNb2plU3VwZXJDQTCCASIwDQYJ
+KoZIhvcNAQEBBQADggEPADCCAQoCggEBAM/sm0+6UtL/v7NeBFuGQqTzoMK+G/tO
+TlydObHzNRj4NzJJV3+HGBnD4q8FKR5BKQ8Wlx+e1n4kMAd7v6COHwmWEJ41jgPV
+bz1mkdeQ+nrHAV8hwAKUVlBKhahzkmECbH/tL7blOMHPH+4K1m2/VEkW+f52uO8B
+m+q/C1/m8vSEdRvk3qQbqiYwR345eh7+zonza6FYYk+hs/mB+T8rgD7OOSVqG1iH
+h3A5fciBn+Hst3lb4xQu8Fkz+p/y/AHpXO3yM1leJfQ2gaXTYUQjheL6v2OybG/0
++L8EczqDguEQfA9R3nyXmwYRKXubakf1siVRCQdT4JvVxwMKNn0y7bUCAwEAAaNC
+MEAwDwYDVR0TAQH/BAUwAwEB/zAOBgNVHQ8BAf8EBAMCAYYwHQYDVR0OBBYEFFjJ
+xxWzQ757Ref7NQ2jrGocQYuzMA0GCSqGSIb3DQEBCwUAA4IBAQCl/rZyonxic6rm
+KKVxq9JwBUyUrWKkdv2jhtosfTn8pzxgHNFWxaqBZjoGFmeIEICuJHx5EdABMN4O
+AdPoiSUiOWkq5mcrcpsKtFZSDxn6xb4i7qH1MVCSkz4sWxhFN8bixNHCpvzCo4wy
+UoNziwxm4OmpwPfS6JKJQrs0ScPCRHaK3AmngHB41vRsOaJgTp6MldeIk2+k/nj2
+Ang8qSO0uzgcLBR9CAwc+6b75KWerWI1lrySd0QpAWANdkGKKQUQSF862xiHTAiQ
+V9FY7MDuBLppeo8KHt0jORKaxFurjyrZ/YJaMPo6JQ1MLeuJyHMSgmMAuiIZ1VzB
+mfy/2bNb
 -----END CERTIFICATE-----
 )EOF";
 
@@ -253,13 +249,8 @@ void setup() {
   while (WiFi.status() != WL_CONNECTED) {
 delay(500);
 }
-if (mqttClient.connect("esp32_client")) {
-mqttClient.publish("test/topic", "Polaczenie TLS dziala poprawnie");
-}
 
-  mqttClient.setServer(MQTT_HOST, MQTT_PORT);
-
-  espClient.setCACert(ca_cert);
+  //espClient.setInsecure();
 
   configTime(0, 0, "tempus1.gum.gov.pl", "tempus2.gum.gov.pl");
   struct tm timeinfo;
@@ -267,7 +258,12 @@ mqttClient.publish("test/topic", "Polaczenie TLS dziala poprawnie");
     Serial.println("Oczekiwanie na synchronizacje czasu...");
     delay(500);
   }
-  Serial.println("Czas zsynchronizowany.");
+  Serial.print("Czas zsynchronizowany. Aktualny rok: ");
+  Serial.println(timeinfo.tm_year + 1900);
+
+  espClient.setCACert(ca_cert);
+
+  mqttClient.setServer(MQTT_HOST, MQTT_PORT);
  // syncTime();
 }
 
