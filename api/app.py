@@ -1,5 +1,6 @@
 from flask import Flask, jsonify, request
 from db import get_connection
+from auth import auth_required  # Import dekoratora z nowo stworzonego modułu
 
 app = Flask(__name__)
 
@@ -9,9 +10,11 @@ def hello_world():
 
 @app.route("/health")
 def health():
+    # Pozostaje publiczny, bez dekoratora auth_required
     return jsonify({"status": "ok"})
 
 @app.route("/measurements")
+@auth_required
 def get_measurements():
     conn = get_connection()
     cur = conn.cursor()
@@ -34,12 +37,12 @@ def get_measurements():
             "value": row[4],
             "unit": row[5],
             "ts_ms": row[6],
-           # "seq": row[7],
             "topic": row[7]
-    })
+        })
     return jsonify(result)
 
 @app.route("/measurements/latest")
+@auth_required
 def get_latest_measurement():
     conn = get_connection()
     cur = conn.cursor()
@@ -62,17 +65,15 @@ def get_latest_measurement():
         "value": row[4],
         "unit": row[5],
         "ts_ms": row[6],
-       # "seq": row[7],
         "topic": row[7]
     })
 
 
 @app.route("/measurements/latest/<sensor>")
+@auth_required
 def get_latest_sensor(sensor):
-
     conn = get_connection()
     cur = conn.cursor()
-
     cur.execute("""
         SELECT id, group_id, device_id, sensor,
                value, unit, ts_ms, topic
@@ -81,9 +82,7 @@ def get_latest_sensor(sensor):
         ORDER BY id DESC
         LIMIT 1
     """, (sensor,))
-
     row = cur.fetchone()
-
     cur.close()
     conn.close()
 
@@ -102,6 +101,7 @@ def get_latest_sensor(sensor):
     })
 
 @app.route("/measurements/history")
+@auth_required
 def get_measurement_history():
     device_id = request.args.get("device_id")
     sensor = request.args.get("sensor")
@@ -129,16 +129,15 @@ def get_measurement_history():
     result = []
     for row in rows:
         result.append({
-        "id": row[0],
-        "group_id": row[1],
-        "device_id": row[2],
-        "sensor": row[3],
-        "value": row[4],
-        "unit": row[5],
-        "ts_ms": row[6],
-       # "seq": row[7],
-        "topic": row[7]
-    })
+            "id": row[0],
+            "group_id": row[1],
+            "device_id": row[2],
+            "sensor": row[3],
+            "value": row[4],
+            "unit": row[5],
+            "ts_ms": row[6],
+            "topic": row[7]
+        })
     return jsonify(result)
 
 if __name__ == '__main__':
