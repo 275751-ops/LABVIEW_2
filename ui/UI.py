@@ -31,7 +31,6 @@ class SensorApp(QWidget):
         
         layout.addLayout(api_layout)
 
-        # Druga linia: Panel logowania (użytkownik i zamaskowane hasło)
         auth_layout = QHBoxLayout()
         
         self.user_input = QLineEdit()
@@ -133,7 +132,6 @@ class SensorApp(QWidget):
         except requests.exceptions.Timeout:
             self.status_label.setText("Timeout - serwer nie odpowiada")
         except requests.exceptions.HTTPError as e:
-            # Specjalna obsługa błędu 401 zdefiniowana w instrukcji
             if e.response.status_code == 401:
                 self.status_label.setText("Status: 401 Unauthorized - Błędne poświadczenia lub brak logowania")
             else:
