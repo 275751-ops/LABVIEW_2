@@ -34,7 +34,6 @@ Wszystkie wiadomości pomiarowe publikowane przez urządzenia brzegowe muszą by
 
 ```json
 {
-  "schema_version": 1,
   "device_id": "esp32-ID",
   "group_id": "g03",
   "sensor": "temperature",
@@ -47,7 +46,6 @@ Wszystkie wiadomości pomiarowe publikowane przez urządzenia brzegowe muszą by
 
 | Pole | Typ danych | Wymagane? | Opis | Przykład |
 |--------|------------|------------|--------|------------|
-| `schema_version` | Integer | Nie | Wersja struktury kontraktu danych. | `1` |
 | `device_id` | String | Tak | Unikalne ID urządzenia pobrane z eFuse. | `"esp32-B4F1"` |
 | `group_id` | String | Tak | Identyfikator zespołu projektowego. | `"g03"` |
 | `sensor` | String | Tak | Typ mierzonej wielkości (np. kanał pomiaru). | `"pressure"` |
@@ -195,3 +193,34 @@ curl http://localhost:5001/health
   "status": "ok"
 }
 ```
+
+## 6. UI
+
+Warstwa prezentacji danych została zrealizowana w postaci okienkowej aplikacji desktopowej napisanej w języku Python z wykorzystaniem biblioteki **PyQt5** oraz integracją wykresów **Matplotlib**. Aplikacja pełni rolę klienta REST API i pozwala na monitorowanie parametrów środowiskowych w czasie rzeczywistym. do uruchomienia aplikacji wystarczy uruchomić plik UI.exe, lub skompilować kod pythona.
+
+### 6.1. Funkcjonalności i Sterowanie Interfejsem
+* **Konfiguracja Połączenia:** Użytkownik ma możliwość dynamicznej zmiany adresu bazowego serwera REST API za pomocą pola tekstowego `QLineEdit`.
+* **Obsługa Autoryzacji (Basic Auth):** Aplikacja integruje mechanizm przełącznika `QCheckBox`. Jeśli opcja jest aktywna, pobierane są dane uwierzytelniające (użytkownik oraz zamaskowane hasło za pomocą trybu `QLineEdit.Password`), a biblioteka `requests` automatycznie koduje je do formatu Base64 i dołącza do nagłówka `Authorization`.
+* **Tryby Pobierania Danych:**
+  * **Pomiar Ręczny:** Przyciski „Połącz” oraz „Pomiar” wymuszają natychmiastowe, jednorazowe odpytanie bazy danych API o 50 ostatnich rekordów historycznych dla każdego z sensorów.
+  * **Ciągły Pomiar (Pętla Czasowa):** Zaznaczenie checkboxa „Ciągły pomiar” aktywuje asynchroniczny zegar systemowy `QTimer`, który cyklicznie co **1000 ms** (1 sekundę) automatycznie odświeża stan wykresów w tle bez zamrażania interfejsu użytkownika.
+  * **Czyszczenie Ekranu:** Przycisk „wyczyść wykresy” natychmiast resetuje zawartość wszystkich osi i odświeża płótno graficzne (`FigureCanvas`).
+
+### 6.2. Wizualizacja Danych (Matplotlib Integration)
+Interfejs alokuje dedykowaną przestrzeń graficzną podzieloną na trzy niezależne sub-wykresy umieszczone w układzie pionowym:
+1. **Wykres Temperatury** (sensor: `temperature`)
+2. **Wykres Ciśnienia** (sensor: `pressure`)
+3. **Wykres Wysokości** (sensor: `Altitude`)
+
+Dzięki wywołaniu metody `data.reverse()`, odebrane pakiety JSON są sortowane chronologicznie, co pozwala na poprawne renderowanie trendów od najstarszych do najnowszych pomiarów na osi czasu.
+
+### 6.3. Obsługa Błędów i Informowanie o Stanie (Robustness)
+Aplikacja posiada rozbudowany blok przechwytywania wyjątków komunikacyjnych, chroniący program przed awarią (crashem) i informujący użytkownika o problemach za pomocą etykiety tekstowej:
+
+| Zaistniały Wyjątek / Status HTTP | Wyświetlany Komunikat w UI | Przyczyna |
+| :--- | :--- | :--- |
+| `requests.exceptions.ConnectionError` | `Błąd połączenia - zły adres API` | Serwer pod podanym adresem IP/portem nie istnieje lub jest wyłączony. |
+| `requests.exceptions.Timeout` | `Timeout - serwer nie odpowiada` | Przekroczono sztywny limit 3 sekund na odpowiedź sieciową. |
+| **HTTP 401 Unauthorized** | `Status: 401 Unauthorized - Błędne poświadczenia lub brak logowania` | Podano niepoprawny login lub hasło przy włączonej autoryzacji w API. |
+| Pozostałe błędy `HTTPError` | `Błąd HTTP: [kod błędu]` | Serwer zwrócił inny kod błędu z rodziny 4xx lub 5xx (np. 404, 500). |
+| `ValueError` | `Błędny JSON z serwera` | Serwer odpowiedział pomyślnie, ale struktura danych nie jest prawidłowym dokumentem JSON. |
