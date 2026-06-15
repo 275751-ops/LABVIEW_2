@@ -1,13 +1,13 @@
 # Dokumentacja Projektu Rozproszony System Pomiarowy
 
-Niniejszy projekt przedstawia rozproszony system end-to-end przeznaczony do zbierania, przetwarzania, składowania oraz udostępniania danych pomiarowych z urządzeń brzegowych (ESP32). Całość infrastruktury serwerowej została w pełni skonteneryzowana przy użyciu Dockera.
+Niniejszy projekt przedstawia rozproszony system end-to-end przeznaczony do zbierania, przetwarzania, składowania oraz udostępniania danych pomiarowych z urządzeń brzegowych (ESP32). Całość infrastruktury serwerowej została w pełni zaprojektowana przy użyciu Dockera.
 
 ---
 
 ## 1. Architektura Systemu i Przepływ Danych
 
 System składa się z czterech głównych warstw:
-1. **Warstwa Brzegowa (Firmware):** Układ ESP32 odczytuje dane z czujnika fizycznego/barometrycznego (BMP280/BME280), synchronizuje czas przez NTP i wysyła paczki danych JSON przez bezpieczny protokół MQTT (TLS).
+1. **Warstwa Brzegowa (Firmware):** Układ ESP32 odczytuje dane z czujnika (BMP280/BME280), synchronizuje czas przez NTP i wysyła paczki danych JSON przez bezpieczny protokół MQTT (TLS).
 2. **Warstwa Komunikacyjna (Broker):** Serwer Eclipse Mosquitto pośredniczy w wymianie wiadomości na porcie szyfrowanym 8883.
 3. **Warstwa Backendowa (Ingestor i Baza danych):** Usługa skryptowa w Pythonie subskrybuje dane z brokera, waliduje je strukturalnie i zapisuje do relacyjnej bazy danych PostgreSQL.
 4. **Warstwa Dostępu (REST API):** Aplikacja we Flasku wystawia zabezpieczone endpointy, umożliwiając zewnętrznym klientom (np. aplikacjom w LabVIEW) pobieranie historii oraz najświeższych pomiarów.
@@ -35,7 +35,7 @@ Wszystkie wiadomości pomiarowe publikowane przez urządzenia brzegowe muszą by
 ```json
 {
   "schema_version": 1,
-  "device_id": "esp32-0000111122223333",
+  "device_id": "esp32-ID",
   "group_id": "g03",
   "sensor": "temperature",
   "value": 24.5,
@@ -47,7 +47,7 @@ Wszystkie wiadomości pomiarowe publikowane przez urządzenia brzegowe muszą by
 
 | Pole | Typ danych | Wymagane? | Opis | Przykład |
 |--------|------------|------------|--------|------------|
-| `schema_version` | Integer | Tak | Wersja struktury kontraktu danych. | `1` |
+| `schema_version` | Integer | Nie | Wersja struktury kontraktu danych. | `1` |
 | `device_id` | String | Tak | Unikalne ID urządzenia pobrane z eFuse. | `"esp32-B4F1"` |
 | `group_id` | String | Tak | Identyfikator zespołu projektowego. | `"g03"` |
 | `sensor` | String | Tak | Typ mierzonej wielkości (np. kanał pomiaru). | `"pressure"` |
@@ -157,7 +157,7 @@ Dane niespełniające kryteriów kontraktu są odrzucane i logowane w konsoli ja
 
 Serwis API wystawia dane pomiarowe na porcie `5001`.
 
-Większość endpointów (poza ogólnodostępnymi informacjami o stanie) chroniona jest dedykowanym dekoratorem bezpieczeństwa `@auth_required`.
+Większość endpointów (poza ogólnodostępnymi informacjami o stanie) chroniona jest dedykowanym dekoratorem bezpieczeństwa `@auth_required` i hasłem zadaklarowanym w pliku `auth.py`.
 
 ### Specyfikacja endpointów API
 
