@@ -39,7 +39,7 @@ Wszystkie wiadomości pomiarowe publikowane przez urządzenia brzegowe muszą by
 ```json
 {
   "device_id": "esp32-ID",
-  "group_id": "g03",
+  "group_id": "g01",
   "sensor": "temperature",
   "value": 24.5,
   "unit": "C",
